@@ -26,8 +26,12 @@ install:
     # Include tokens
     VERSION_TOKENS=($(echo ${CCM_VERSION} | sed -e "s/[\\.|-]/ /g"))
     echo "${VERSION_TOKENS[0]}.${VERSION_TOKENS[1]}.${VERSION_TOKENS[2]}" > "${INSTALL_DIR}/0.version.txt"
-    ccm create test -v $CCM_VERSION
-    ccm remove test
+- ccm create test -v $CCM_VERSION
+- ccm remove test
+- git clone https://github.com/datastax/$DRIVER_REPO
+- cd $DRIVER_REPO || exit
+- git fetch --tags
+- export DRIVER_TAG=$(git tag | grep -P '^v?\d+\.\d+\.\d+$' | tail -1)
 
 for:
   -
@@ -36,6 +40,10 @@ for:
         - DRIVER_REPO: "nodejs-driver"
     test_script:
       - echo "for nodejs $SERVER_PACKAGE_URL"
+      - export TEST_TRACE=on
+      - git checkout $DRIVER_TAG
+      - npm install
+      - ./node_modules/.bin/mocha test/integration/short/client-execute-tests.js
   -
     matrix:
       only:
