@@ -1,0 +1,7 @@
+image: Ubuntu
+
+install:
+- ls
+
+test_script:
+- echo hello!
