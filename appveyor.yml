@@ -43,7 +43,7 @@ for:
       - export TEST_TRACE=on
       - git checkout $DRIVER_TAG
       - npm install
-      - ./node_modules/.bin/mocha test/integration/short/client-execute-tests.js
+      - ./node_modules/.bin/mocha test/integration/short/client-execute-prepared-tests.js
   -
     matrix:
       only:
