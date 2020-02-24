@@ -1,7 +1,19 @@
 image: Ubuntu
+stack: node 12, jdk 8, python 2
+
+environment:
+  CCM_VERSION: 3.11.6
+  SERVER_PACKAGE_URL: "http://archive.apache.org/dist/cassandra/3.11.6/apache-cassandra-3.11.6-bin.tar.gz"
+  INSTALL_DIR: "${HOME}/.ccm/repository/${CCM_VERSION}"
 
 install:
-- ls
+- git clone --branch master --single-branch git@github.com:riptano/ccm.git
+- pushd ccm || exit
+- sudo python setup.py install
+- popd
+- ccm status
 
 test_script:
-- echo hello!
+- echo $SERVER_PACKAGE_URL
+
+build: off
