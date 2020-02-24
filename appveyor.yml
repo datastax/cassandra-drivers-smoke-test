@@ -5,6 +5,9 @@ environment:
   CCM_VERSION: 3.11.6
   SERVER_PACKAGE_URL: "http://archive.apache.org/dist/cassandra/3.11.6/apache-cassandra-3.11.6-bin.tar.gz"
   INSTALL_DIR: "${HOME}/.ccm/repository/${CCM_VERSION}"
+  matrix:
+    - DRIVER_REPO: "nodejs-driver"
+    - DRIVER_REPO: "java-driver"
 
 install:
 - git clone --branch master --single-branch git@github.com:riptano/ccm.git
@@ -22,7 +25,18 @@ install:
     ccm create test -v $CCM_VERSION
     ccm remove test
 
-test_script:
-- echo $SERVER_PACKAGE_URL
+for:
+  -
+    matrix:
+      only:
+        - DRIVER_REPO: "nodejs-driver"
+    test_script:
+      - echo "for nodejs $SERVER_PACKAGE_URL"
+  -
+    matrix:
+      only:
+          - DRIVER_REPO: "java-driver"
+    test_script:
+      - echo "for java $SERVER_PACKAGE_URL"
 
 build: off
