@@ -15,11 +15,11 @@ install:
 - sudo python setup.py install
 - popd
 - ccm status || true
+- mkdir -p $INSTALL_DIR
 - sh: |
     # Download the C* binaries
-    mkdir $INSTALL_DIR
     wget $SERVER_PACKAGE_URL -O server.tar.gz
-    tar xzf server.tar.gz -C ${INSTALL_DIR} --strip-components=1
+    tar xzf server.tar.gz -C ${INSTALL_DIR} --strip-components=1 || exit
     VERSION_TOKENS=($(echo ${CCM_VERSION} | sed -e "s/[\\.|-]/ /g"))
     echo "${VERSION_TOKENS[0]}.${VERSION_TOKENS[1]}.${VERSION_TOKENS[2]}" > "${INSTALL_DIR}/0.version.txt"
     ccm create test -v $CCM_VERSION
