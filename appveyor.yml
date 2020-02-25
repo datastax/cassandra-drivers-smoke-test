@@ -2,8 +2,6 @@ image: Ubuntu
 stack: node 12, jdk 8, python 2
 
 environment:
-  CCM_VERSION: 3.11.6
-  SERVER_PACKAGE_URL: "http://archive.apache.org/dist/cassandra/3.11.6/apache-cassandra-3.11.6-bin.tar.gz"
   matrix:
     - DRIVER_REPO: "nodejs-driver"
     - DRIVER_REPO: "java-driver"
