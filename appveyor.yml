@@ -34,21 +34,20 @@ install:
 - export DRIVER_TAG=$(git tag | grep -P '^v?\d+\.\d+\.\d+$' | tail -1)
 
 for:
-  -
-    matrix:
+  - matrix:
       only:
         - DRIVER_REPO: "nodejs-driver"
     test_script:
-      - echo "for nodejs $SERVER_PACKAGE_URL"
       - export TEST_TRACE=on
-      - git checkout $DRIVER_TAG
+      - git checkout NODEJS-599
+      # TODO: Use stable $DRIVER_TAG
+      #- git checkout $DRIVER_TAG
       - npm install
-      - ./node_modules/.bin/mocha test/integration/short/client-execute-prepared-tests.js
-  -
-    matrix:
+      - npm run server_api
+  - matrix:
       only:
           - DRIVER_REPO: "java-driver"
     test_script:
-      - echo "for java $SERVER_PACKAGE_URL"
+      - echo "Hello from java"
 
 build: off
