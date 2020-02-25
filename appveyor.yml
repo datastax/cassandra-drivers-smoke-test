@@ -12,6 +12,7 @@ install:
 - sudo python setup.py install
 - popd
 - ccm status || true
+- export CCM_PATH=${HOME}/ccm
 - export INSTALL_DIR="${HOME}/.ccm/repository/${CCM_VERSION}"
 - echo $INSTALL_DIR
 - mkdir -p $INSTALL_DIR
