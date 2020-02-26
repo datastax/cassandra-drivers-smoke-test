@@ -15,15 +15,15 @@ for:
         - DRIVER_REPO: "nodejs-driver"
     test_script:
       - export TEST_TRACE=on
-      - git checkout master
       # TODO: Use stable $DRIVER_TAG
-      #- git checkout $DRIVER_TAG
+      - git checkout master
       - npm install
       - npm run server_api
   - matrix:
       only:
           - DRIVER_REPO: "java-driver"
     test_script:
-      - echo "Hello from java"
+      - mvn -B -V install -DskipTests
+      - mvn -B -V verify --batch-mode --show-version -Dccm.version=$CCM_VERSION -Dmaven.javadoc.skip=true
 
 build: off
