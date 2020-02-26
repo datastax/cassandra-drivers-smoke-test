@@ -15,9 +15,9 @@ for:
       only:
         - DRIVER_REPO: "nodejs-driver"
     test_script:
-      - export TEST_TRACE=on
       # TODO: Use stable $DRIVER_TAG
       - git checkout master
+      - export TEST_TRACE=on
       - npm install
       - npm run server_api
   - matrix:
@@ -31,7 +31,10 @@ for:
       only:
         - DRIVER_REPO: "csharp-driver"
     test_script:
-      - dotnet --version
       - git checkout $DRIVER_TAG
+      - export DOTNET_CLI_TELEMETRY_OPTOUT=1
+      - dotnet --version
+      - dotnet restore src
+      - dotnet test src/Cassandra.IntegrationTests/Cassandra.IntegrationTests.csproj -v n -f netcoreapp2.1 -c Release --filter "(TestCategory=realcluster)"
 
 build: off
