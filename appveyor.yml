@@ -31,11 +31,11 @@ for:
       only:
         - DRIVER_REPO: "csharp-driver"
     test_script:
-      - git checkout $DRIVER_TAG
+      - git checkout master
       - export DOTNET_CLI_TELEMETRY_OPTOUT=1
       - export CASSANDRA_VERSION=$CCM_VERSION
       - dotnet --version
       - dotnet restore src
-      - dotnet test src/Cassandra.IntegrationTests/Cassandra.IntegrationTests.csproj -f netcoreapp2.1 -c Release --filter TestCategory=realcluster --logger:Appveyor
+      - dotnet test src/Cassandra.IntegrationTests/Cassandra.IntegrationTests.csproj -f netcoreapp2.1 -c Release --filter TestCategory=realcluster
 
 build: off
