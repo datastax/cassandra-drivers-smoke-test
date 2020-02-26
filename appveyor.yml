@@ -5,6 +5,7 @@ environment:
   matrix:
     - DRIVER_REPO: "nodejs-driver"
     - DRIVER_REPO: "java-driver"
+    - DRIVER_REPO: "csharp-driver"
 
 install:
 - source ./install.sh
@@ -26,5 +27,11 @@ for:
       - git checkout $DRIVER_TAG
       - mvn -B -V install -DskipTests
       - mvn -B -V verify --batch-mode --show-version -Dccm.version=$CCM_VERSION -DskipSerialITs -DskipIsolatedITs -Dmaven.javadoc.skip=true
+  - matrix:
+      only:
+        - DRIVER_REPO: "csharp-driver"
+    test_script:
+      - dotnet --version
+      - git checkout $DRIVER_TAG
 
 build: off
