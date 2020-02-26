@@ -15,7 +15,7 @@ for:
         - DRIVER_REPO: "nodejs-driver"
     test_script:
       - export TEST_TRACE=on
-      - git checkout NODEJS-599
+      - git checkout master
       # TODO: Use stable $DRIVER_TAG
       #- git checkout $DRIVER_TAG
       - npm install
