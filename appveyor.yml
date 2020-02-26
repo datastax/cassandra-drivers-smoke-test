@@ -7,7 +7,7 @@ environment:
     - DRIVER_REPO: "java-driver"
 
 install:
-- sh: ./install.sh
+- source ./install.sh
 - git clone --branch master --single-branch git@github.com:riptano/ccm.git
 - pushd ccm || exit
 - sudo python setup.py install
