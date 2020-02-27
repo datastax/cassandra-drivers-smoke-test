@@ -38,6 +38,6 @@ for:
       - export CCM_SSL_PATH=$CCM_PATH/ssl
       - dotnet --version
       - dotnet restore src
-      - dotnet test src/Cassandra.IntegrationTests/Cassandra.IntegrationTests.csproj -f netcoreapp2.1 -c Release --filter TestCategory=serverapi
+      - dotnet test src/Cassandra.IntegrationTests/Cassandra.IntegrationTests.csproj -f netcoreapp2.1 -c Release --filter TestCategory=serverapi --logger:Appveyor
 
 build: off
