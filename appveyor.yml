@@ -32,7 +32,7 @@ for:
         - DRIVER_REPO: "csharp-driver"
     test_script:
       # TODO: Use stable $DRIVER_TAG
-      - git checkout CSHARP-870
+      - git checkout master
       - export DOTNET_CLI_TELEMETRY_OPTOUT=1
       - export CASSANDRA_VERSION=$CCM_VERSION
       - export CCM_SSL_PATH=$CCM_PATH/ssl
