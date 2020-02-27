@@ -6,6 +6,7 @@ environment:
     - DRIVER_REPO: "nodejs-driver"
     - DRIVER_REPO: "java-driver"
     - DRIVER_REPO: "csharp-driver"
+    - DRIVER_REPO: "cpp-driver"
 
 install:
 - source ./install.sh
@@ -39,5 +40,19 @@ for:
       - dotnet --version
       - dotnet restore src
       - dotnet test src/Cassandra.IntegrationTests/Cassandra.IntegrationTests.csproj -f netcoreapp2.1 -c Release --filter TestCategory=serverapi --logger:Appveyor
+  - matrix:
+      only:
+        - DRIVER_REPO: "cpp-driver"
+    test_script:
+      - git checkout ${DRIVER_LATEST_TAG}
+      - export CI_INTEGRATION_ENABLED=true
+      - export OS_VERSION=ubuntu/bionic
+      - export OS_DISTRO=ubuntu
+      - export SMOKE_TEST_FILTER=BasicsTests*:CassandraTypes/*
+      - . .build.sh
+      - build_driver 'CASS'
+      - build/cassandra-integration-tests --category=cassandra --gtest_filter=${SMOKE_TEST_FILTER} --gtest_output=xml:integration-smoke-test-results.xml --version=${CCM_VERSION}
+    on_finish:
+      - find "${APPVEYOR_BUILD_FOLDER}" -type f -name 'integration-smoke-test-results.xml' -print0 | xargs -0 -I '{}' curl -F 'file=@{}' "https://ci.appveyor.com/api/testresults/junit/${APPVEYOR_JOB_ID}"
 
 build: off

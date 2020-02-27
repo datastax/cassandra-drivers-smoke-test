@@ -1,5 +1,11 @@
 #!/bin/bash
 
+# Install driver specific packages
+sudo apt-get update
+if [ "${DRIVER_REPO}" = 'cpp-driver' ]; then
+  sudo apt-get install -y debhelper libkrb5-dev libssl-dev libuv1-dev zlib1g-dev
+fi
+
 # Install CCM
 git clone --branch master --single-branch https://github.com/riptano/ccm.git
 pushd ccm || exit
