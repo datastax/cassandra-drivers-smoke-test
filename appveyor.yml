@@ -2,41 +2,42 @@ image: Ubuntu
 stack: node 12, jdk 8, python 2
 
 environment:
-  CCM_VERSION: 3.11.6
-  SERVER_PACKAGE_URL: "http://archive.apache.org/dist/cassandra/3.11.6/apache-cassandra-3.11.6-bin.tar.gz"
-  INSTALL_DIR: "${HOME}/.ccm/repository/${CCM_VERSION}"
   matrix:
     - DRIVER_REPO: "nodejs-driver"
     - DRIVER_REPO: "java-driver"
+    - DRIVER_REPO: "csharp-driver"
 
 install:
-- git clone --branch master --single-branch git@github.com:riptano/ccm.git
-- pushd ccm || exit
-- sudo python setup.py install
-- popd
-- ccm status || true
-- mkdir -p $INSTALL_DIR
-- sh: |
-    # Download the C* binaries
-    wget $SERVER_PACKAGE_URL -O server.tar.gz
-    tar xzf server.tar.gz -C ${INSTALL_DIR} --strip-components=1 || exit
-    VERSION_TOKENS=($(echo ${CCM_VERSION} | sed -e "s/[\\.|-]/ /g"))
-    echo "${VERSION_TOKENS[0]}.${VERSION_TOKENS[1]}.${VERSION_TOKENS[2]}" > "${INSTALL_DIR}/0.version.txt"
-    ccm create test -v $CCM_VERSION
-    ccm remove test
+- source ./install.sh
 
 for:
-  -
-    matrix:
+  - matrix:
       only:
         - DRIVER_REPO: "nodejs-driver"
     test_script:
-      - echo "for nodejs $SERVER_PACKAGE_URL"
-  -
-    matrix:
+      # TODO: Use stable $DRIVER_TAG
+      - git checkout master
+      - export TEST_TRACE=on
+      - npm install
+      - npm run server_api
+  - matrix:
       only:
           - DRIVER_REPO: "java-driver"
     test_script:
-      - echo "for java $SERVER_PACKAGE_URL"
+      - git checkout $DRIVER_TAG
+      - mvn -B -V install -DskipTests
+      - mvn -B -V verify --batch-mode --show-version -Dccm.version=$CCM_VERSION -DskipSerialITs -DskipIsolatedITs -Dmaven.javadoc.skip=true
+  - matrix:
+      only:
+        - DRIVER_REPO: "csharp-driver"
+    test_script:
+      # TODO: Use stable $DRIVER_TAG
+      - git checkout master
+      - export DOTNET_CLI_TELEMETRY_OPTOUT=1
+      - export CASSANDRA_VERSION=$CCM_VERSION
+      - export CCM_SSL_PATH=$CCM_PATH/ssl
+      - dotnet --version
+      - dotnet restore src
+      - dotnet test src/Cassandra.IntegrationTests/Cassandra.IntegrationTests.csproj -f netcoreapp2.1 -c Release --filter TestCategory=serverapi
 
 build: off
