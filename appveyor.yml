@@ -6,8 +6,9 @@ environment:
     - DRIVER_REPO: "nodejs-driver"
       CASSANDRA_VERSION: $CCM_VERSION
     - DRIVER_REPO: "java-driver"
-      CASSANDRA_VERSION: %CCM_VERSION%
+      CASSANDRA_VERSION: $CCM_VERSION
     - DRIVER_REPO: "csharp-driver"
+      CASSANDRA_VERSION: $CCM_VERSION
 
 install:
 - source ./install.sh
