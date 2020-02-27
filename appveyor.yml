@@ -15,26 +15,26 @@ for:
       only:
         - DRIVER_REPO: "nodejs-driver"
     test_script:
-      # TODO: Use stable $DRIVER_TAG
+      # TODO: Use stable ${DRIVER_LATEST_TAG}
       - git checkout master
       - export TEST_TRACE=on
       - npm install
       - npm run server_api
   - matrix:
       only:
-          - DRIVER_REPO: "java-driver"
+        - DRIVER_REPO: "java-driver"
     test_script:
-      - git checkout $DRIVER_TAG
+      - git checkout ${DRIVER_LATEST_TAG}
       - mvn -B -V install -DskipTests
-      - mvn -B -V verify --batch-mode --show-version -Dccm.version=$CCM_VERSION -DskipSerialITs -DskipIsolatedITs -Dmaven.javadoc.skip=true
+      - mvn -B -V verify --batch-mode --show-version -Dccm.version=${CCM_VERSION} -DskipSerialITs -DskipIsolatedITs -Dmaven.javadoc.skip=true
   - matrix:
       only:
         - DRIVER_REPO: "csharp-driver"
     test_script:
-      # TODO: Use stable $DRIVER_TAG
+      # TODO: Use stable ${DRIVER_LATEST_TAG}
       - git checkout master
       - export DOTNET_CLI_TELEMETRY_OPTOUT=1
-      - export CASSANDRA_VERSION=$CCM_VERSION
+      - export CASSANDRA_VERSION=${CCM_VERSION}
       - export CCM_SSL_PATH=$CCM_PATH/ssl
       - dotnet --version
       - dotnet restore src
