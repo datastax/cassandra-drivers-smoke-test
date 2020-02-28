@@ -16,11 +16,13 @@ for:
       only:
         - DRIVER_REPO: "nodejs-driver"
     test_script:
+      - npm install mocha-appveyor-reporter@0
       # TODO: Use stable ${DRIVER_LATEST_TAG}
       - git checkout master
       - export TEST_TRACE=on
+      - export multi="spec=- mocha-appveyor-reporter=-"
       - npm install
-      - npm run server_api
+      - ./node_modules/.bin/mocha test/integration/short -g '@SERVER_API' --recursive -R mocha-appveyor-reporter --exit
   - matrix:
       only:
         - DRIVER_REPO: "java-driver"
@@ -28,6 +30,8 @@ for:
       - git checkout ${DRIVER_LATEST_TAG}
       - mvn -B -V install -DskipTests
       - mvn -B -V verify --batch-mode --show-version -Dccm.version=${CCM_VERSION} -DskipSerialITs -DskipIsolatedITs -Dmaven.javadoc.skip=true
+    on_finish:
+      - find "${APPVEYOR_BUILD_FOLDER}" -type f -name 'TEST-*.xml' -print0 | xargs -0 -I '{}' curl -F 'file=@{}' "https://ci.appveyor.com/api/testresults/junit/${APPVEYOR_JOB_ID}"
   - matrix:
       only:
         - DRIVER_REPO: "csharp-driver"
