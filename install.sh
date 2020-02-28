@@ -1,5 +1,8 @@
 #!/bin/bash
 
+echo "Smoke tests for Apache Cassandra ${CCM_VERSION} using ${DRIVER_REPO}"
+echo "Using ${SERVER_PACKAGE_URL}"
+
 # Install driver specific packages
 sudo apt-get update
 if [ "${DRIVER_REPO}" = 'cpp-driver' ]; then
