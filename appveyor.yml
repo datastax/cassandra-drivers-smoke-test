@@ -3,10 +3,22 @@ stack: node 12, jdk 8, python 2
 
 environment:
   matrix:
-    - DRIVER_REPO: "nodejs-driver"
-    - DRIVER_REPO: "java-driver"
-    - DRIVER_REPO: "csharp-driver"
-    - DRIVER_REPO: "cpp-driver"
+    - DRIVER_REPO: nodejs-driver
+      SERVER_VERSION: 3.11
+    - DRIVER_REPO: nodejs-driver
+      SERVER_VERSION: 4.0
+    - DRIVER_REPO: java-driver
+      SERVER_VERSION: 3.11
+    - DRIVER_REPO: java-driver
+      SERVER_VERSION: 4.0
+    - DRIVER_REPO: csharp-driver
+      SERVER_VERSION: 3.11
+    - DRIVER_REPO: csharp-driver
+      SERVER_VERSION: 4.0
+    - DRIVER_REPO: cpp-driver
+      SERVER_VERSION: 3.11
+    - DRIVER_REPO: cpp-driver
+      SERVER_VERSION: 4.0
 
 install:
 - source ./install.sh
@@ -14,7 +26,7 @@ install:
 for:
   - matrix:
       only:
-        - DRIVER_REPO: "nodejs-driver"
+        - DRIVER_REPO: nodejs-driver
     test_script:
       # TODO: Use stable ${DRIVER_LATEST_TAG}
       - git checkout master
@@ -23,14 +35,14 @@ for:
       - npm run server_api
   - matrix:
       only:
-        - DRIVER_REPO: "java-driver"
+        - DRIVER_REPO: java-driver
     test_script:
       - git checkout ${DRIVER_LATEST_TAG}
       - mvn -B -V install -DskipTests
       - mvn -B -V verify --batch-mode --show-version -Dccm.version=${CCM_VERSION} -DskipSerialITs -DskipIsolatedITs -Dmaven.javadoc.skip=true
   - matrix:
       only:
-        - DRIVER_REPO: "csharp-driver"
+        - DRIVER_REPO: csharp-driver
     test_script:
       # TODO: Use stable ${DRIVER_LATEST_TAG}
       - git checkout master
@@ -42,7 +54,7 @@ for:
       - dotnet test src/Cassandra.IntegrationTests/Cassandra.IntegrationTests.csproj -f netcoreapp2.1 -c Release --filter TestCategory=serverapi --logger:Appveyor
   - matrix:
       only:
-        - DRIVER_REPO: "cpp-driver"
+        - DRIVER_REPO: cpp-driver
     test_script:
       - git checkout ${DRIVER_LATEST_TAG}
       - export CI_INTEGRATION_ENABLED=true

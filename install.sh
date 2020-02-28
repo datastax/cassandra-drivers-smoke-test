@@ -1,5 +1,15 @@
 #!/bin/bash
 
+# Determine the Apache Cassandra version to download
+SERVER_PACKAGE_BASE_URL=https://dist.apache.org/repos/dist/release/cassandra/
+LATEST_SERVER_VERSION=$(curl -sS ${SERVER_PACKAGE_BASE_URL} | \
+                        grep -Po "href=[\"']\K[^'\"]+" | \
+                        grep -P '\d+.\d+' | \
+                        sed -e 's/\///' | \
+                        grep ${SERVER_VERSION})
+SERVER_PACKAGE_URL=${SERVER_PACKAGE_BASE_URL}/${LATEST_SERVER_VERSION}/apache-cassandra-${LATEST_SERVER_VERSION}-bin.tar.gz
+CCM_VERSION=${LATEST_SERVER_VERSION}
+
 echo "Smoke tests for Apache Cassandra ${CCM_VERSION} using ${DRIVER_REPO}"
 echo "Using ${SERVER_PACKAGE_URL}"
 
