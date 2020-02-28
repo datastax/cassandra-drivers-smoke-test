@@ -2,29 +2,15 @@
 
 Run a subset of the integration test suite of each DataStax driver in order to smoke test Apache Cassandra releases.
 
-## Environment variables
-
-The build requires two environment variables to be set: `SERVER_PACKAGE_URL` and `CCM_VERSION`.
-
-For example:
-
-```bash
-export SERVER_PACKAGE_URL=https://dist.apache.org/repos/dist/release/cassandra/3.11.6/apache-cassandra-3.11.6-bin.tar.gz
-export CCM_VERSION=3.11.6
-```
-
 ## AppVeyor Project
 
 https://ci.appveyor.com/project/DataStax/cassandra-drivers-smoke-test/
 
-The environment variables on AppVeyor are set using the [Settings
- UI](https://ci.appveyor.com/project/DataStax/cassandra-drivers-smoke-test/settings).
- 
 ## Other CI Service Providers
 
 This project currently uses [AppVeyor](https://www.appveyor.com/), if needed, it can easily be migrated to other CI
  Service Provider as all the logic on `install.sh` is provider agnostic.
- 
+
 ## License
 
 © DataStax, Inc.
