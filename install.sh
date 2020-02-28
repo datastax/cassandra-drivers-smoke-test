@@ -1,13 +1,15 @@
 #!/bin/bash
 
 # Determine the Apache Cassandra version to download
-SERVER_PACKAGE_BASE_URL=https://dist.apache.org/repos/dist/release/cassandra
+SERVER_PACKAGE_BASE_URL=https://dist.apache.org/repos/dist/release/cassandra/
 LATEST_SERVER_VERSION=$(curl -sS ${SERVER_PACKAGE_BASE_URL} | \
                         grep -Po "href=[\"']\K[^'\"]+" | \
                         grep -P '\d+.\d+' | \
                         sed -e 's/\///' | \
                         grep ${SERVER_VERSION})
-SERVER_PACKAGE_URL=${SERVER_PACKAGE_BASE_URL}/${LATEST_SERVER_VERSION}/apache-cassandra-${LATEST_SERVER_VERSION}-bin.tar.gz
+[ -z "${LATEST_SERVER_VERSION}" ] && echo "Could not determine latest server version" && exit
+SERVER_FILENAME=apache-cassandra-${LATEST_SERVER_VERSION}-bin.tar.gz
+SERVER_PACKAGE_URL=${SERVER_PACKAGE_BASE_URL}/${LATEST_SERVER_VERSION}/${SERVER_FILENAME}
 CCM_VERSION_TOKENS=($(echo ${LATEST_SERVER_VERSION} | \
                       grep -Po '(\d+\.)+\d+' | \
                       sed -e "s/\\./ /g"))
@@ -41,8 +43,8 @@ export CCM_PATH="$(pwd)/ccm"
 export INSTALL_DIR="${HOME}/.ccm/repository/${CCM_VERSION}"
 echo ${INSTALL_DIR}
 mkdir -p ${INSTALL_DIR}
-wget ${SERVER_PACKAGE_URL} -O server.tar.gz
-tar xzf server.tar.gz -C ${INSTALL_DIR} --strip-components=1 || exit
+wget ${SERVER_PACKAGE_URL} -O ${SERVER_FILENAME}
+tar xzf ${SERVER_FILENAME} -C ${INSTALL_DIR} --strip-components=1 || exit
 
 # Add 0.version.txt file for CCM
 echo "${CCM_VERSION}" > "${INSTALL_DIR}/0.version.txt"
