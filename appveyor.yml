@@ -29,7 +29,7 @@ for:
     test_script:
       - git checkout ${DRIVER_LATEST_TAG}
       - mvn -B -V install -DskipTests
-      - mvn -B -V verify --batch-mode --show-version -Dccm.version=${CCM_VERSION} -DskipSerialITs -DskipIsolatedITs -Dmaven.javadoc.skip=true
+      - mvn -B -V verify --batch-mode --show-version -Dccm.version=${CCM_VERSION} -DskipSerialITs -DskipIsolatedITs -Dmaven.javadoc.skip=true -Dmaven.test.failure.ignore=false
     on_finish:
       - find "${APPVEYOR_BUILD_FOLDER}" -type f -name 'TEST-*.xml' -print0 | xargs -0 -I '{}' curl -F 'file=@{}' "https://ci.appveyor.com/api/testresults/junit/${APPVEYOR_JOB_ID}"
   - matrix:
