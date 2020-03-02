@@ -27,7 +27,7 @@ for:
     test_script:
       - git checkout ${DRIVER_LATEST_TAG}
       - mvn -B -V install -DskipTests
-      - mvn -B -V verify --batch-mode --show-version -Dccm.version=${CCM_VERSION} -DskipSerialITs -DskipIsolatedITs -Dmaven.javadoc.skip=true
+      - mvn -B -V verify --batch-mode --show-version -Dccm.version=${CCM_VERSION} -DskipSerialITs -DskipIsolatedITs -Dmaven.javadoc.skip=true -Dmaven.test.failure.ignore=false
   - matrix:
       only:
         - DRIVER_REPO: "csharp-driver"
