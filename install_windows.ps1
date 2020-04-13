@@ -7,14 +7,14 @@ Write-Host "Smoke tests for Apache Cassandra $env:CCM_VERSION using $env:DRIVER_
 Write-Host "Using $env:SERVER_PACKAGE_URL"
 
 # Install Ant
-$ant_base = "$($dep_dir)\ant"
+$ant_base = "$($env:USERPROFILE)\ant"
 $ant_path = "$($ant_base)\apache-ant-1.9.7"
 If (!(Test-Path $ant_path)) {
   Write-Host "Installing Ant"
   $ant_url = "https://www.dropbox.com/s/lgx95x1jr6s787l/apache-ant-1.9.7-bin.zip?dl=1"
   $ant_zip = "C:\Users\appveyor\apache-ant-1.9.7-bin.zip"
-  (new-object System.Net.WebClient).DownloadFile($ant_url, $ant_zip)
-  [System.IO.Compression.ZipFile]::ExtractToDirectory($ant_zip, $ant_base)
+  Invoke-WebRequest -Uri $ant_url -OutFile $ant_zip
+  expand-archive -Path $ant_zip -destinationpath $ant_base
 }
 $env:PATH="$($ant_path)\bin;$($env:PATH)"
 
@@ -29,13 +29,13 @@ If (!(Test-Path $jce_indicator)) {
   if(!(Test-Path $zip)) {
     $url = "https://www.dropbox.com/s/al1e6e92cjdv7m7/jce_policy-8.zip?dl=1"
     Write-Host "Downloading file..."
-    (new-object System.Net.WebClient).DownloadFile($url, $zip)
+    Invoke-WebRequest -Uri $url -OutFile $zip
     Write-Host "Download completed."
   }
 
   Add-Type -AssemblyName System.IO.Compression.FileSystem
   Write-Host "Extracting zip file..."
-  [System.IO.Compression.ZipFile]::ExtractToDirectory($zip, $target)
+  expand-archive -Path $zip -destinationpath $target
   Write-Host "Extraction completed."
 
   $jcePolicyDir = "$target\UnlimitedJCEPolicyJDK8"
@@ -70,7 +70,6 @@ $INSTALL_PATH = "$env:USERPROFILE\.ccm\repository\$env:CCM_VERSION"
 
 New-Item -ItemType Directory -Path $INSTALL_PATH
 Invoke-WebRequest -Uri $SERVER_PACKAGE_URL -OutFile server-bin.tar.gz
-appveyor DownloadFile $SERVER_PACKAGE_URL
 tar xzf server-bin.tar.gz -C $INSTALL_PATH --strip-components=1
 
 $MyPath = "$INSTALL_PATH\0.version.txt"
