@@ -61,7 +61,7 @@ for:
         git checkout master
 
         $env:CASSANDRA_VERSION=$env:CCM_VERSION
-        $env:CCM_SSL_PATH=$env:CCM_PATH\ssl
+        $env:CCM_SSL_PATH="$env:CCM_PATH\ssl"
         $env:DOTNET_CLI_TELEMETRY_OPTOUT=1
 
         dotnet --info

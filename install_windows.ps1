@@ -60,7 +60,7 @@ If (!(Test-Path $env:CCM_PATH)) {
 
 $sslPath="C:$($env:USERPROFILE)\ssl"
 If (!(Test-Path $sslPath)) {
-  Copy-Item "$($env:CCM_PATH)\ssl" -Destination $sslPath -Recurse
+  Copy-Item "$env:CCM_PATH\ssl" -Destination $sslPath -Recurse
 }
 
 Write-Host "Set execution Policy"
