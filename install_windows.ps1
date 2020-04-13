@@ -47,7 +47,7 @@ If (!(Test-Path $jce_indicator)) {
 Write-Host "Installing CCM and its dependencies"
 Start-Process python -ArgumentList "-m pip install psutil pyYaml six" -Wait -NoNewWindow
 
-$env:CCM_PATH="C:$($env:USERPROFILE)\ccm"
+$env:CCM_PATH="$env:USERPROFILE\ccm"
 
 If (!(Test-Path $env:CCM_PATH)) {
   Write-Host "Cloning git ccm... $($env:CCM_PATH)"
@@ -69,7 +69,7 @@ Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Scope Process
 $INSTALL_PATH = "$env:USERPROFILE\.ccm\repository\$env:CCM_VERSION"
 
 New-Item -ItemType Directory -Path $INSTALL_PATH
-Invoke-WebRequest -Uri $SERVER_PACKAGE_URL -OutFile server-bin.tar.gz
+Invoke-WebRequest -Uri $env:SERVER_PACKAGE_URL -OutFile server-bin.tar.gz
 tar xzf server-bin.tar.gz -C $INSTALL_PATH --strip-components=1
 
 $MyPath = "$INSTALL_PATH\0.version.txt"
