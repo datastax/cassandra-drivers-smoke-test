@@ -58,7 +58,7 @@ If (!(Test-Path $env:CCM_PATH)) {
   popd
 }
 
-$sslPath="C:$($env:USERPROFILE)\ssl"
+$sslPath="$env:USERPROFILE\ssl"
 If (!(Test-Path $sslPath)) {
   Copy-Item "$env:CCM_PATH\ssl" -Destination $sslPath -Recurse
 }
