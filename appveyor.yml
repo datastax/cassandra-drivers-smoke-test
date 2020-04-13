@@ -40,7 +40,7 @@ for:
   - matrix:
       only:
         - DRIVER_REPO: "csharp-driver"
-        - APPVEYOR_BUILD_WORKER_IMAGE: Ubuntu
+          APPVEYOR_BUILD_WORKER_IMAGE: Ubuntu
     test_script:
       # TODO: Use stable ${DRIVER_LATEST_TAG}
       - git checkout master
@@ -53,7 +53,7 @@ for:
   - matrix:
       only:
         - DRIVER_REPO: "csharp-driver"
-        - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+          APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
     install:
       - ps: .\install_windows.ps1
     test_script:
