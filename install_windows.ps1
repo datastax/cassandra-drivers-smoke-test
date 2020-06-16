@@ -83,3 +83,6 @@ ccm remove test
 # Clone the driver repository
 git clone https://github.com/datastax/$env:DRIVER_REPO
 cd $env:DRIVER_REPO
+
+$env:DRIVER_LATEST_TAG=(git describe --tags (git rev-list --tags --max-count=1)) | Out-String
+Write-Host $Env:DRIVER_LATEST_TAG
