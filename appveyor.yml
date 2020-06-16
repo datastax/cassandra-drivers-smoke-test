@@ -50,7 +50,7 @@ for:
       - export CCM_SSL_PATH=$CCM_PATH/ssl
       - dotnet --version
       - dotnet restore src
-      - dotnet test src/Cassandra.IntegrationTests/Cassandra.IntegrationTests.csproj -f netcoreapp2.1 -c Release --filter TestCategory=serverapi --logger:Appveyor
+      - dotnet test src/Cassandra.IntegrationTests/Cassandra.IntegrationTests.csproj -f netcoreapp3.1 -c Release --filter TestCategory=serverapi --logger:Appveyor
   - matrix:
       only:
         - DRIVER_REPO: "csharp-driver"
@@ -70,7 +70,7 @@ for:
         dotnet restore src
         dotnet build src\Cassandra.sln -c Release
 
-        dotnet test src\Cassandra.IntegrationTests\Cassandra.IntegrationTests.csproj -c Release -f net461 --filter "(TestCategory=serverapi)" --logger:Appveyor
+        dotnet test src\Cassandra.IntegrationTests\Cassandra.IntegrationTests.csproj -c Release -f net462 --filter "(TestCategory=serverapi)" --logger:Appveyor
   - matrix:
       only:
         - DRIVER_REPO: "cpp-driver"
