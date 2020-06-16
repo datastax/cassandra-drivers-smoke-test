@@ -2,7 +2,7 @@ stack: node 12, jdk 8, python 2
 
 environment:
   global:
-    CCM_SHA_VERSION: ecaf6c906177d8ce042e081bf5e37ed3502c80f2
+    CCM_SHA_VERSION: 97e3736d4c29bd86878d2b3372f757d18fc89520
   matrix:
     - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
       DRIVER_REPO: csharp-driver
