@@ -85,4 +85,5 @@ git clone https://github.com/datastax/$env:DRIVER_REPO
 cd $env:DRIVER_REPO
 
 $env:DRIVER_LATEST_TAG=(git describe --tags (git rev-list --tags --max-count=1)) | Out-String
+$env:DRIVER_LATEST_TAG = $env:DRIVER_LATEST_TAG -replace "`r`n",""
 Write-Host $Env:DRIVER_LATEST_TAG
