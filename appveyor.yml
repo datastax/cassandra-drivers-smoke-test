@@ -43,7 +43,8 @@ for:
         - DRIVER_REPO: "csharp-driver"
           APPVEYOR_BUILD_WORKER_IMAGE: Ubuntu
     test_script:
-      - git checkout ${DRIVER_LATEST_TAG}
+      #- git checkout ${DRIVER_LATEST_TAG} ## 3.15.0 tests have an issue with latest ccm
+      - git checkout master
       - export DOTNET_CLI_TELEMETRY_OPTOUT=1
       - export CASSANDRA_VERSION=${CCM_VERSION}
       - export CCM_SSL_PATH=$CCM_PATH/ssl
@@ -58,7 +59,8 @@ for:
       - ps: .\install_windows.ps1
     test_script:
     - ps: |
-        git checkout $env:DRIVER_LATEST_TAG
+        //git checkout $env:DRIVER_LATEST_TAG // 3.15.0 tests have an issue with latest ccm
+        git checkout master
 
         $env:CASSANDRA_VERSION=$env:CCM_VERSION
         $env:CCM_SSL_PATH="$env:CCM_PATH\ssl"
