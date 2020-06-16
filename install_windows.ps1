@@ -77,7 +77,8 @@ $Utf8NoBomEncoding = New-Object System.Text.UTF8Encoding $False
 [System.IO.File]::WriteAllText($MyPath, $env:CCM_VERSION, $Utf8NoBomEncoding)
 
 # Verify that ccm cluster creation succeeds
-ccm create test -v $env:CCM_VERSION
+ccm create test -v $env:CCM_VERSION -n 3
+ccm start test
 ccm remove test
 
 # Clone the driver repository
