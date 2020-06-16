@@ -54,6 +54,7 @@ If (!(Test-Path $env:CCM_PATH)) {
   Start-Process git -ArgumentList "clone https://github.com/pcmanus/ccm.git $($env:CCM_PATH)" -Wait -NoNewWindow
   Write-Host "git ccm cloned"
   pushd $env:CCM_PATH
+  Start-Process git -ArgumentList "reset --hard $($Env:CCM_SHA_VERSION)" -Wait -NoNewWindow
   Start-Process python -ArgumentList "setup.py install" -Wait -NoNewWindow
   popd
 }
@@ -77,8 +78,7 @@ $Utf8NoBomEncoding = New-Object System.Text.UTF8Encoding $False
 [System.IO.File]::WriteAllText($MyPath, $env:CCM_VERSION, $Utf8NoBomEncoding)
 
 # Verify that ccm cluster creation succeeds
-ccm create test -v $env:CCM_VERSION -n 3
-ccm start test
+ccm create test -v $env:CCM_VERSION
 ccm remove test
 
 # Clone the driver repository
