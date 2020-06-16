@@ -45,7 +45,6 @@ for:
       - export DOTNET_CLI_TELEMETRY_OPTOUT=1
       - export CASSANDRA_VERSION=${CCM_VERSION}
       - export CCM_SSL_PATH=$CCM_PATH/ssl
-      - export BuildAllTargets=True
       - dotnet --version
       - dotnet restore src
       - dotnet test src/Cassandra.IntegrationTests/Cassandra.IntegrationTests.csproj -f netcoreapp2.1 -c Release --filter TestCategory=serverapi --logger:Appveyor
@@ -62,7 +61,6 @@ for:
         $env:CASSANDRA_VERSION=$env:CCM_VERSION
         $env:CCM_SSL_PATH="$env:CCM_PATH\ssl"
         $env:DOTNET_CLI_TELEMETRY_OPTOUT=1
-        $env:BuildAllTargets="True"
 
         dotnet --info
         dotnet restore src
