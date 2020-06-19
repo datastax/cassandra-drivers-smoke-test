@@ -54,6 +54,7 @@ If (!(Test-Path $env:CCM_PATH)) {
   Start-Process git -ArgumentList "clone https://github.com/pcmanus/ccm.git $($env:CCM_PATH)" -Wait -NoNewWindow
   Write-Host "git ccm cloned"
   pushd $env:CCM_PATH
+  Start-Process git -ArgumentList "reset --hard $($Env:CCM_SHA_VERSION)" -Wait -NoNewWindow
   Start-Process python -ArgumentList "setup.py install" -Wait -NoNewWindow
   popd
 }
@@ -83,3 +84,7 @@ ccm remove test
 # Clone the driver repository
 git clone https://github.com/datastax/$env:DRIVER_REPO
 cd $env:DRIVER_REPO
+
+$env:DRIVER_LATEST_TAG=(git describe --tags (git rev-list --tags --max-count=1)) | Out-String
+$env:DRIVER_LATEST_TAG = $env:DRIVER_LATEST_TAG -replace "`r`n",""
+Write-Host $Env:DRIVER_LATEST_TAG

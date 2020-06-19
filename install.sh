@@ -12,6 +12,7 @@ fi
 # Install CCM
 git clone --branch master --single-branch https://github.com/riptano/ccm.git
 pushd ccm || exit
+git reset --hard ${CCM_SHA_VERSION}
 sudo python setup.py install
 popd
 ccm status || true
