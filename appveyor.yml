@@ -18,7 +18,7 @@ environment:
       DRIVER_REPO: cpp-driver
 
 init:
-- ps: Update-AppveyorBuild -Version "$($env:CCM_VERSION)#$($env:appveyor_build_number)" -Message "Apache Cassandra version $($env:CCM_VERSION)`r`nTest run for Apache Cassandra version $($env:CCM_VERSION) using the package at $($env:SERVER_PACKAGE_URL)."
+- ps: Update-AppveyorBuild -Version "$cassandra-($env:CCM_VERSION) ($($env:appveyor_build_number))" -Message "Apache Cassandra version $($env:CCM_VERSION)"
 
 install:
 - source ./install.sh
