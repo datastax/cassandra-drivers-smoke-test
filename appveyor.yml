@@ -1,5 +1,7 @@
 stack: node 12, jdk 8, python 2
 
+version: '{build}'
+
 environment:
   global:
     CCM_SHA_VERSION: 97e3736d4c29bd86878d2b3372f757d18fc89520
@@ -56,6 +58,8 @@ for:
       only:
         - DRIVER_REPO: "csharp-driver"
           APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+    init:
+      - ps: Update-AppveyorBuild -Version "$($env:CCM_VERSION)#$($env:appveyor_build_number)" -Message "Apache Cassandra version $($env:CCM_VERSION)`r`nTest run for Apache Cassandra version $($env:CCM_VERSION) using the package at $($env:SERVER_PACKAGE_URL)."
     install:
       - ps: .\install_windows.ps1
     test_script:
