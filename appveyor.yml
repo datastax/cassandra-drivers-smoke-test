@@ -17,9 +17,6 @@ environment:
     - APPVEYOR_BUILD_WORKER_IMAGE: Ubuntu
       DRIVER_REPO: cpp-driver
 
-init:
-- ps: Update-AppveyorBuild -Version "$cassandra-($env:CCM_VERSION) ($($env:appveyor_build_number))" -Message "Apache Cassandra version $($env:CCM_VERSION)"
-
 install:
 - source ./install.sh
 
@@ -61,6 +58,8 @@ for:
       only:
         - DRIVER_REPO: "csharp-driver"
           APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
+    init:
+      - ps: Update-AppveyorBuild -Version "$($env:CCM_VERSION)#$($env:appveyor_build_number)" -Message "Apache Cassandra version $($env:CCM_VERSION)`r`nTest run for Apache Cassandra version $($env:CCM_VERSION) using the package at $($env:SERVER_PACKAGE_URL)."
     install:
       - ps: .\install_windows.ps1
     test_script:
