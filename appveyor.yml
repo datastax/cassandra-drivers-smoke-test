@@ -1,5 +1,7 @@
 stack: node 12, jdk 8, python 2
 
+version: '{build}'
+
 environment:
   global:
     CCM_SHA_VERSION: 97e3736d4c29bd86878d2b3372f757d18fc89520
@@ -14,6 +16,9 @@ environment:
       DRIVER_REPO: nodejs-driver
     - APPVEYOR_BUILD_WORKER_IMAGE: Ubuntu
       DRIVER_REPO: cpp-driver
+
+init:
+- ps: Update-AppveyorBuild -Version "$($env:CCM_VERSION)#$($env:appveyor_build_number)" -Message "Test run for Apache Cassandra version $($env:CCM_VERSION) using the package at $($env:SERVER_PACKAGE_URL)."
 
 install:
 - source ./install.sh
