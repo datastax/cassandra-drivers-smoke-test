@@ -25,11 +25,11 @@ for:
       only:
         - DRIVER_REPO: "nodejs-driver"
     test_script:
-      - npm install mocha-appveyor-reporter@0
       - git checkout ${DRIVER_LATEST_TAG}
       - export TEST_TRACE=on
-      - export multi="spec=- mocha-appveyor-reporter=-"
       - npm install
+      - npm install mocha-appveyor-reporter@0
+      - export multi="spec=- mocha-appveyor-reporter=-"
       - ./node_modules/.bin/mocha test/integration/short -g '@SERVER_API' --recursive -R mocha-appveyor-reporter --exit
   - matrix:
       only:
