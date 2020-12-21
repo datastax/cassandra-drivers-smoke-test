@@ -6,8 +6,6 @@ environment:
   global:
     CCM_SHA_VERSION: 97e3736d4c29bd86878d2b3372f757d18fc89520
   matrix:
-    - APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
-      DRIVER_REPO: csharp-driver
     - APPVEYOR_BUILD_WORKER_IMAGE: Ubuntu
       DRIVER_REPO: csharp-driver
     - APPVEYOR_BUILD_WORKER_IMAGE: Ubuntu
@@ -45,6 +43,8 @@ for:
       only:
         - DRIVER_REPO: "csharp-driver"
           APPVEYOR_BUILD_WORKER_IMAGE: Ubuntu
+    init:
+      - ps: Update-AppveyorBuild -Version "$($env:CCM_VERSION)#$($env:appveyor_build_number)" -Message "Apache Cassandra version $($env:CCM_VERSION)`r`nTest run for Apache Cassandra version $($env:CCM_VERSION) using the package at $($env:SERVER_PACKAGE_URL)."
     test_script:
       #- git checkout ${DRIVER_LATEST_TAG} ## 3.15.0 tests have an issue with latest ccm
       - git checkout master
@@ -53,29 +53,7 @@ for:
       - export CCM_SSL_PATH=$CCM_PATH/ssl
       - dotnet --version
       - dotnet restore src
-      - dotnet test src/Cassandra.IntegrationTests/Cassandra.IntegrationTests.csproj -f netcoreapp3.1 -c Release --filter TestCategory=serverapi --logger:Appveyor
-  - matrix:
-      only:
-        - DRIVER_REPO: "csharp-driver"
-          APPVEYOR_BUILD_WORKER_IMAGE: Visual Studio 2019
-    init:
-      - ps: Update-AppveyorBuild -Version "$($env:CCM_VERSION)#$($env:appveyor_build_number)" -Message "Apache Cassandra version $($env:CCM_VERSION)`r`nTest run for Apache Cassandra version $($env:CCM_VERSION) using the package at $($env:SERVER_PACKAGE_URL)."
-    install:
-      - ps: .\install_windows.ps1
-    test_script:
-    - ps: |
-        //git checkout $env:DRIVER_LATEST_TAG // 3.15.0 tests have an issue with latest ccm
-        git checkout master
-
-        $env:CASSANDRA_VERSION=$env:CCM_VERSION
-        $env:CCM_SSL_PATH="$env:CCM_PATH\ssl"
-        $env:DOTNET_CLI_TELEMETRY_OPTOUT=1
-
-        dotnet --info
-        dotnet restore src
-        dotnet build src\Cassandra.sln -c Release
-
-        dotnet test src\Cassandra.IntegrationTests\Cassandra.IntegrationTests.csproj -c Release -f net462 --filter "(TestCategory=serverapi)" --logger:Appveyor
+      - dotnet test src/Cassandra.IntegrationTests/Cassandra.IntegrationTests.csproj -f netcoreapp3.1 -c Release --filter TestCategory=serverapi --logger:Appveyor --logger:"console;verbosity=normal"
   - matrix:
       only:
         - DRIVER_REPO: "cpp-driver"
